@@ -142,7 +142,7 @@
          * var bar = foo.rightCurry(1,2);
          *
          * bar(3);   // -> [3,1,2]
-         * bar(3,4,5); // -> 【3,4,5,1,2]
+         * bar(3,4,5); // -> [3,4,5,1,2]
          *
          */
         "rightCurry": function() {

@@ -54,3 +54,5 @@ while((result = pattern.exec(source)) != null) {
 var docs = {auth:"yuanyan", methods:methods};
 
 fs.writeFileSync("../doc/docs.js","var docs = "+JSON.stringify(docs,null,"    "));
+
+console.log("document generate success.");

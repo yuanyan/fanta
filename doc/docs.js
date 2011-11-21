@@ -3,13 +3,13 @@ var docs = {
     "methods": [
         {
             "desc": "方法绑定",
-            "method": "bind([scope])",
+            "method": "bind(scope, arg1, arg2,...)",
             "ret": "Function",
             "example": " function func(){\n     return this;\n }\n function func2(arg1, arg2){\n     return arg2;\n }\n func.bind(\"scope\")()  // -> 'scope'\n func2.bind(\"scope\", \"arg1\")(\"arg2\") // -> 'arg2'"
         },
         {
             "desc": "绑定为事件回调方法",
-            "method": "bindAsEventListener(scope, arg1, arg2...)",
+            "method": "bindAsEventListener(scope, arg1, arg2,...)",
             "ret": "Function",
             "example": " function click(evt, output){\n     console.log(output);\n }\n var handler = click.bindAsEventListener(button，\"be clicked\");\n document.addEventListener(button, \"click\",  handler); // 每次点击时输出“be clicked\""
         },
@@ -23,7 +23,7 @@ var docs = {
             "desc": "右柯里化",
             "method": "rightCurry(arg1, arg2, ...)",
             "ret": "Function",
-            "example": "function foo() {\n     return toArray(arguments);\n};\n// 右柯里化\nvar bar = foo.rightCurry(1,2);\nbar(3);   // -> [3,1,2]\nbar(3,4,5); // -> 【3,4,5,1,2]"
+            "example": "function foo() {\n     return toArray(arguments);\n};\n// 右柯里化\nvar bar = foo.rightCurry(1,2);\nbar(3);   // -> [3,1,2]\nbar(3,4,5); // -> [3,4,5,1,2]"
         },
         {
             "desc": "生成间隔执行当前方法的定时器",

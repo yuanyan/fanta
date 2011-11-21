@@ -74,12 +74,12 @@
 
     <h1>F1.js</h1>
 
-    <p>F1是什么？ F1是关于函数编程的原生扩展库，F1的实现扩展了原生，这是被一些人认为是非常evil的，但F1的确这样做了，这与
+    <p>F1是什么？ F1是关于JavaScript函数编程的原生扩展库，在F1的实现中扩展了原生的宿主对象，这是被一些作者认为是非常evil的事情，但F1的确这样做了，这与
         <a target="_blank" href="http://www.prototypejs.org/">prototype.js</a>的实现方式一致，
-        目前F1扩展了原生的<code>Function.prototype, Function, String.prototype</code>,已知扩展<code>Array.prototype, Object.prototype</code>会带来容易被忽略的副作用，
-        而F1的扩展可能带来副作用是可以被忽略，因为在现实项目中我们不会去for in Function与String。</p>
-    <p>F1不是什么？ F1不是JavaScript框架，F1不提供常见框架所具有的DOM节点的操作，Ajax请求，动画等一些特性。这与Underscore的定位比较类似，可以引入F1与其他框架相辅相成，
-        如果说Underscore是一副领结，F1则是一枚戒指。并且是一枚魔戒。</p>
+        目前F1扩展了原生的 Function.prototype, Function, String.prototype , 已知扩展 Array.prototype, Object.prototype 会带来容易被忽略的副作用，
+        而F1的扩展带来副作用是可以被忽略的，因为在真实编码中我们很少有需求去 for in Function ，并且真当程序需要用 for in 遍历对象时，我们建议任何 for in遍历中都应通过hasOwnProperty方法来判断获取到的属性是否为该对象的属性，而非原型对象属性。相比扩展原生方式所能带来的编程流畅性，促使F1选择了用扩展原生的方式去实现。</p>
+    <p>F1不是什么？ F1不是JavaScript框架，F1不提供常见框架所具有的DOM节点的操作，Ajax请求，动画等一些特性。这与<a target="_blank" href="http://documentcloud.github.com/underscore/">Underscore.js</a>的定位比较类似，可以引入F1与其他框架相辅相成，
+        如果说Underscore是一副领结，F1则是一枚戒指，带上这枚戒指能让开发更得心应手。</p>
 </div>
 
 <div id="template">
