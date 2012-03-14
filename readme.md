@@ -2,9 +2,9 @@
 
 ### What is fanta ?
 
-简单的说 Fanta是关于 *JavaScript函数式编程的原生扩展库* 。Fanta与 [prototype.js](http://prototypejs.org/) 的实现方式一致都扩展了原生的宿主对象，
+Fanta是关于 *JavaScript函数式编程的原生扩展库* 。Fanta与 [prototype.js](http://prototypejs.org/) 的实现方式一致都扩展了原生的宿主对象，
 这是被一些作者认为是evil的事情，因为扩展 `Array.prototype`, `Object.prototype` 等原生对象会带来容易被忽略的副作用，但Fanta的确这样做了，
-理由很简单，相比扩展原生方式所能带来的编程流畅性，会使编程的更愉悦，仿佛一瓶芬达入肚。况且在编程中，当需要用` for in `遍历对象时，
+理由很简单，相比其他方式扩展原生带来的编程流畅性，会使编程的体验更愉悦，就仿佛一瓶芬达入肚，一气呵成。况且在编程中，当需要用` for in `遍历对象时，
 我们建议都应通过 `hasOwnProperty` 方法来判断获取到的属性是否为该对象的属性，而非原型对象属性。这促使Fanta实现选择了扩展原生的方式。
 
 ### What is fanta not ?
