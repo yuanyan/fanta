@@ -53,16 +53,6 @@
             color: #555529;
         }
 
-        code {
-            margin-left: 20px;
-        }
-
-        pre {
-            font-size: 12px;
-            padding: 2px 0 2px 12px;
-            border-left: 6px solid #aaaa99;
-            margin: 0px 0 30px;
-        }
 
         #template {
             display: none;
@@ -71,22 +61,25 @@
 </head>
 <body>
 <div id="container">
-
-    <h1>Fanta.js - when function met fanta</h1>
-
-    <p>Fanta是什么？ 简单的说Fanta是关于JavaScript函数式编程的原生扩展库。Fanta与
-        <a target="_blank" href="http://www.prototypejs.org/">prototype.js</a>的实现方式一致都扩展了原生的宿主对象，这是被一些作者认为是evil的事情，因为扩展 Array.prototype, Object.prototype 等原生对象会带来容易被忽略的副作用，但Fanta的确这样做了，
-        理由很简单，相比扩展原生方式所能带来的编程流畅性，会使编程的更愉悦，仿佛一瓶芬达入肚。况且在编程中，当需要用 for in 遍历对象时，我们建议都应通过hasOwnProperty方法来判断获取到的属性是否为该对象的属性，而非原型对象属性。这促使Fanta实现选择了扩展原生的方式。</p>
-    <p>Fanta不是什么？ Fanta不是JavaScript框架，它不提供常见框架所具有的DOM节点的操作，Ajax请求，动画等一些特性。这与<a target="_blank" href="http://documentcloud.github.com/underscore/">Underscore.js</a>的定位比较类似，可以引入Fanta与其他框架相辅相成。</p>
 </div>
 
 <div id="template">
     {{#methods}}
     <p>
-        <h3>{{method}}  {{#ret}} <code>Return:{{ret}}</code> {{/ret}} </h3>
-        {{desc}}
+    <pre>
+####{{method}} { {{#ret}} return {{ret}}  {{/ret}}  } <br />
+
+{{desc}} <br />
+
+{{#example}}
+```javascript
+{{example}}
+```
+{{/example}}
+    </pre>
     </p>
-    {{#example}} <pre>{{example}}</pre> {{/example}}
+
+
     {{/methods}}
 </div>
 

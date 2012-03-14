@@ -4,7 +4,7 @@
 
 var fs = require('fs');
 
-var source = fs.readFileSync("../src/f1.js");
+var source = fs.readFileSync("../src/fanta.js");
 
 var result, comment, desc, method, ret, example, methods=[];
 // {desc:"", method: "", return: "", example: ""}
