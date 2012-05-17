@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Fanta : when function met fanta." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Fanta</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/yuanyan/fanta">View on GitHub</a>
+
+          <h1 id="project_title">Fanta</h1>
+          <h2 id="project_tagline">when function met fanta.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/yuanyan/fanta/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/yuanyan/fanta/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>Fanta.js - when function met fanta</h2>
+
+<h3>What is fanta ?</h3>
+
+<p>Fanta是关于 <em>JavaScript函数式编程的原生扩展库</em> 。Fanta与 <a href="http://prototypejs.org/">prototype.js</a> 的实现方式一致都扩展了原生的宿主对象，
+这是被一些作者认为是evil的事情，因为扩展 <code>Array.prototype</code>, <code>Object.prototype</code> 等原生对象会带来容易被忽略的副作用，但Fanta的确这样做了，
+理由很简单，相比其他方式扩展原生带来的编程流畅性，会使编程的体验更愉悦，就仿佛一瓶芬达入肚，一气呵成。况且在编程中，当需要用<code>for in</code>遍历对象时，
+我们建议都应通过 <code>hasOwnProperty</code> 方法来判断获取到的属性是否为该对象的属性，而非原型对象属性。这促使Fanta实现选择了扩展原生的方式。</p>
+
+<h3>What is fanta not ?</h3>
+
+<p>Fanta不是JavaScript框架，它不提供常见框架所具有的DOM节点的操作，Ajax请求，动画等一些特性。这与 <a href="http://documentcloud.github.com/underscore/">Underscore.js</a>
+的定位比较类似，让Fanta与其他框架相辅相成。</p>
+
+<h3>Fanta api</h3>
+
+<h4>bind(scope, arg1, arg2,...) {  return Function  }</h4>
+
+<p>方法绑定</p>
+
+<div class="highlight">
+<pre> <span class="kd">function</span> <span class="nx">func</span><span class="p">(){</span>
+     <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="kd">function</span> <span class="nx">func2</span><span class="p">(</span><span class="nx">arg1</span><span class="p">,</span> <span class="nx">arg2</span><span class="p">){</span>
+     <span class="k">return</span> <span class="nx">arg2</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="nx">func</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">"scope"</span><span class="p">)()</span>  <span class="c1">// -&gt; 'scope'</span>
+ <span class="nx">func2</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s2">"scope"</span><span class="p">,</span> <span class="s2">"arg1"</span><span class="p">)(</span><span class="s2">"arg2"</span><span class="p">)</span> <span class="c1">// -&gt; 'arg2'</span>
+</pre>
+</div>
+
+
+<h4>bindAsEventListener(scope, arg1, arg2,...) {  return Function  }</h4>
+
+<p>绑定为事件回调方法</p>
+
+<div class="highlight">
+<pre> <span class="kd">function</span> <span class="nx">click</span><span class="p">(</span><span class="nx">evt</span><span class="p">,</span> <span class="nx">output</span><span class="p">){</span>
+     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">output</span><span class="p">);</span>
+ <span class="p">}</span>
+ <span class="kd">var</span> <span class="nx">handler</span> <span class="o">=</span> <span class="nx">click</span><span class="p">.</span><span class="nx">bindAsEventListener</span><span class="p">(</span><span class="nx">button</span><span class="err">，</span><span class="s2">"be clicked"</span><span class="p">);</span>
+ <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">button</span><span class="p">,</span> <span class="s2">"click"</span><span class="p">,</span>  <span class="nx">handler</span><span class="p">);</span> <span class="c1">// 每次点击时输出“be clicked"</span>
+</pre>
+</div>
+
+
+<h4>curry(arg1, arg2, ...) {  return Function  }</h4>
+
+<p>柯里化</p>
+
+<div class="highlight">
+<pre><span class="kd">function</span> <span class="nx">foo</span><span class="p">()</span> <span class="p">{</span>
+     <span class="k">return</span> <span class="nx">toArray</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="c1">// 柯里化</span>
+<span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">curry</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">bar</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>   <span class="c1">// -&gt; [1,2，3]</span>
+<span class="nx">bar</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span> <span class="c1">// -&gt; [1,2，3，4，5]</span>
+</pre>
+</div>
+
+
+<h4>rightCurry(arg1, arg2, ...) {  return Function  }</h4>
+
+<p>右柯里化</p>
+
+<div class="highlight">
+<pre><span class="kd">function</span> <span class="nx">foo</span><span class="p">()</span> <span class="p">{</span>
+     <span class="k">return</span> <span class="nx">toArray</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="c1">// 右柯里化</span>
+<span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">rightCurry</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">bar</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>   <span class="c1">// -&gt; [3,1,2]</span>
+<span class="nx">bar</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span> <span class="c1">// -&gt; [3,4,5,1,2]</span>
+</pre>
+</div>
+
+
+<h4>interval([delay] = 1) {  return Function  }</h4>
+
+<p>生成间隔执行当前方法的定时器</p>
+
+<div class="highlight">
+<pre><span class="kd">function</span> <span class="nx">foo</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span>
+   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// 间隔1秒执行</span>
+<span class="kd">var</span> <span class="nx">barTimer</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">interval</span><span class="p">(</span><span class="mi">1000</span><span class="p">)(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// -&gt; 1</span>
+<span class="c1">// 取消间隔执行</span>
+<span class="nx">barTimer</span><span class="p">.</span><span class="nx">cancel</span><span class="p">();</span>
+<span class="c1">// 间隔2秒执行</span>
+<span class="kd">var</span> <span class="nx">barTimer2</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">interval</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span>
+<span class="nx">barTimer2</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="c1">// -&gt; 2</span>
+<span class="c1">// 取消间隔执行</span>
+<span class="nx">barTimer2</span><span class="p">.</span><span class="nx">cancel</span><span class="p">();</span>
+</pre>
+</div>
+
+
+<h4>delay([wait] = 1) {  return Function  }</h4>
+
+<p>生成延迟执行当前方法的定时器</p>
+
+<div class="highlight">
+<pre>  <span class="kd">function</span> <span class="nx">foo</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arg</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="c1">// 延迟1秒后执行</span>
+  <span class="kd">var</span> <span class="nx">fooTimer</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">)(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// -&gt; 1</span>
+
+  <span class="c1">// 取消延迟执行</span>
+  <span class="nx">fooTimer</span><span class="p">.</span><span class="nx">cancel</span><span class="p">();</span>
+  <span class="kd">function</span> <span class="nx">bar</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="kd">var</span> <span class="nx">barTimer</span> <span class="o">=</span> <span class="nx">bar</span><span class="p">.</span><span class="nx">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+  <span class="c1">// 执行3次, 每次延迟执行1秒</span>
+  <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">].</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">barTimer</span><span class="p">);</span> <span class="c1">// -&gt; 1 2 3</span>
+  <span class="nx">barTimer</span><span class="p">.</span><span class="nx">cancel</span><span class="p">();</span> <span class="c1">// 取消所有的延迟执行</span>
+</pre>
+</div>
+
+
+<h4>defer() {  return result  }</h4>
+
+<p>推迟到当前程序执行堆栈为空时执行函数</p>
+
+<div class="highlight">
+<pre><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="k">return</span> <span class="s1">'called'</span><span class="p">}).</span><span class="nx">defer</span><span class="p">();</span> <span class="c1">// -&gt; 'called'</span>
+</pre>
+</div>
+
+
+<h4>debounce([wait] = 100) {  return Function  }</h4>
+
+<p>生成一个函数当被连续的重复调用时，将以上一次调用时间为基线的指定时间后延迟执行，常用于事件处理</p>
+
+<div class="highlight">
+<pre><span class="kd">var</span> <span class="nx">lazyLayout</span> <span class="o">=</span> <span class="nx">calculateLayout</span><span class="p">.</span><span class="nx">debounce</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">resize</span><span class="p">(</span><span class="nx">lazyLayout</span><span class="p">);</span>
+</pre>
+</div>
+
+
+<h4>count(times) {  return Function  }</h4>
+
+<p>生成一个函数当被调用了指定次数后才执行</p>
+
+<div class="highlight">
+<pre><span class="kd">function</span> <span class="nx">foo</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'done'</span><span class="p">)};</span>
+<span class="kd">var</span> <span class="nx">foo2</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">count</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="nx">foo</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span> <span class="c1">// print 'done'</span>
+</pre>
+</div>
+
+
+<h4>once() {  return Function  }</h4>
+
+<p>生成一个函数无论被调用多少次但只执行一次</p>
+
+<div class="highlight">
+<pre><span class="kd">var</span> <span class="nx">tmp</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">foo</span><span class="p">(){</span> <span class="k">return</span> <span class="o">++</span><span class="nx">tmp</span><span class="p">;}</span>
+<span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">once</span><span class="p">();</span>
+<span class="nx">bar</span><span class="p">();</span> <span class="c1">// -&gt; 1</span>
+<span class="nx">bar</span><span class="p">();</span> <span class="c1">// -&gt; 1</span>
+</pre>
+</div>
+
+
+<h4>wrap(wrapper) {  return Function  }</h4>
+
+<p>生成一个函数在原函数执行前后添加额外的执行</p>
+
+<div class="highlight">
+<pre><span class="kd">function</span> <span class="nx">foo</span><span class="p">(){</span><span class="k">return</span> <span class="s1">'foo'</span><span class="p">}</span>
+<span class="kd">function</span> <span class="nx">wrapper</span><span class="p">(</span><span class="nx">fn</span><span class="p">){</span> <span class="k">return</span> <span class="s2">"foo"</span><span class="o">+</span><span class="nx">fn</span><span class="p">()</span><span class="o">+</span><span class="s2">"foo"</span><span class="p">;}</span>
+<span class="p">(</span><span class="nx">foo</span><span class="p">.</span><span class="nx">wrap</span><span class="p">(</span><span class="nx">wrapper</span><span class="p">))();</span> <span class="c1">// -&gt; foofoofoo</span>
+</pre>
+</div>
+
+
+<h4>before(advice) {  return Function  }</h4>
+
+<p>在函数执行前注入</p>
+
+<div class="highlight">
+<pre><span class="kd">function</span> <span class="nx">foo</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"foo"</span><span class="p">)}</span>
+<span class="kd">var</span> <span class="nx">foo2</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">before</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"before"</span><span class="p">)})</span>
+<span class="nx">foo2</span><span class="p">();</span> <span class="c1">// print 'before' 'foo'</span>
+</pre>
+</div>
+
+
+<h4>after(advice) {  return Function  }</h4>
+
+<p>在函数执行后注入</p>
+
+<div class="highlight">
+<pre><span class="kd">function</span> <span class="nx">foo</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"foo"</span><span class="p">)}</span>
+<span class="kd">var</span> <span class="nx">foo2</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"after"</span><span class="p">)})</span>
+<span class="nx">foo2</span><span class="p">();</span> <span class="c1">// print  'foo' 'after'</span>
+</pre>
+</div>
+
+
+<h4>around(advice) {  return Function  }</h4>
+
+<p>在函数执行前后注入</p>
+
+<div class="highlight">
+<pre><span class="kd">function</span> <span class="nx">foo</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"foo"</span><span class="p">)}</span>
+<span class="kd">var</span> <span class="nx">foo2</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">around</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"around"</span><span class="p">)})</span>
+<span class="nx">foo2</span><span class="p">();</span> <span class="c1">// print 'around' 'foo' 'around'</span>
+</pre>
+</div>
+
+
+<h4>lock() {  return Function  }</h4>
+
+<p>生成一个函数，执行时忽略所有的传入的参数</p>
+
+<div class="highlight">
+<pre><span class="kd">function</span> <span class="nx">foo</span><span class="p">(</span><span class="nx">x</span><span class="p">){</span><span class="k">return</span> <span class="nx">x</span><span class="o">||</span><span class="mi">2</span><span class="p">}</span>
+<span class="kd">var</span> <span class="nx">foo2</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">lock</span><span class="p">();</span>
+<span class="nx">foo2</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// -&gt; 2</span>
+</pre>
+</div>
+
+
+<h4>sandbox() {  return Function  }</h4>
+
+<p>在沙箱中执行函数，使函数异常时不会影响其他程序执行</p>
+
+<div class="highlight">
+<pre><span class="kd">function</span> <span class="nx">foo</span><span class="p">(){</span><span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'err'</span><span class="p">)}</span>
+<span class="kd">function</span> <span class="nx">bar</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'ok'</span><span class="p">)}</span>
+<span class="p">(</span><span class="nx">foo</span><span class="p">.</span><span class="nx">sandbox</span><span class="p">())();</span> <span class="nx">bar</span><span class="p">();</span> <span class="c1">// -&gt; print 'ok'</span>
+<span class="nx">foo</span><span class="p">();</span><span class="nx">bar</span><span class="p">();</span> <span class="c1">// nothing print</span>
+</pre>
+</div>
+
+
+<h4>memoize(hasher) {  return Function  }</h4>
+
+<p>保存函数计算结果</p>
+
+<div class="highlight">
+<pre><span class="kd">var</span> <span class="nx">fibonacci</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">return</span> <span class="nx">n</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">?</span> <span class="nx">n</span> <span class="o">:</span> <span class="nx">fibonacci</span><span class="p">(</span><span class="nx">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="nx">fibonacci</span><span class="p">(</span><span class="nx">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">);</span>
+<span class="p">}).</span><span class="nx">memoize</span><span class="p">();</span>
+<span class="nx">fibonacci</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span> <span class="c1">// -&gt; 55</span>
+</pre>
+</div>
+
+
+<h4>exec([times] = 1) {  return Number  }</h4>
+
+<p>执行指定次数</p>
+
+<div class="highlight">
+<pre><span class="kd">function</span> <span class="nx">foo</span><span class="p">(){}</span>
+<span class="nx">foo</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+</pre>
+</div>
+
+
+<h4>Function.S(f,g) {  return Function  }</h4>
+
+<p>组合子S，函数应用的组合子</p>
+
+<h4>Function.K(value) {  return Function  }</h4>
+
+<p>组合子K，生成一个常数函数,永远返回指定的值</p>
+
+<h4>Function.I(value) {  return value  }</h4>
+
+<p>组合子I，恒等函数</p>
+
+<h4>Function.isFunction(obj) {  return Boolean  }</h4>
+
+<p>判断是否为函数</p>
+
+<div class="highlight">
+<pre><span class="kd">function</span> <span class="nx">foo</span><span class="p">(){}</span>
+<span class="nb">Function</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span> <span class="c1">// -&gt; true</span>
+<span class="nb">Function</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// -&gt;false</span>
+</pre>
+</div>
+
+
+<h4>Function.EMPTY { }</h4>
+
+<p>空函数</p>
+
+<div class="highlight">
+<pre>  <span class="kd">var</span> <span class="nx">onSuccess</span> <span class="o">=</span> <span class="nx">callback</span> <span class="o">||</span> <span class="nb">Function</span><span class="p">.</span><span class="nx">EMPTY</span>
+</pre>
+</div>
+
+
+<h4>Function.error(message) {  return Function  }</h4>
+
+<p>创建一个方法执行时抛出指定错误信息</p>
+
+<div class="highlight">
+<pre> <span class="kd">var</span> <span class="nx">deprecated</span> <span class="o">=</span> <span class="nb">Function</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">"deprecated method"</span><span class="p">);</span>
+</pre>
+</div>
+
+
+<h4>Function.constant(value) {  return Function  }</h4>
+
+<p>生成一个常数函数,永远返回指定的值</p>
+
+<div class="highlight">
+<pre> <span class="nb">Function</span><span class="p">.</span><span class="nx">constant</span><span class="p">(</span><span class="s2">"invalid"</span><span class="p">)();</span> <span class="c1">// =&gt; "invalid"</span>
+</pre>
+</div>
+
+
+<h4>Function.identity { }</h4>
+
+<p>恒等函数</p>
+
+<h4>Function.flow(...functions) {  return Function  }</h4>
+
+<p>阻塞线程的函数串行化执行，返回最后一个函数的执行结果如 (Function.flow(f, g))(x) 执行结果等同于 f(x);g(x);</p>
+
+<div class="highlight">
+<pre><span class="kd">function</span> <span class="nx">foo</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span><span class="k">return</span> <span class="o">++</span><span class="nx">val</span><span class="p">;}</span>
+<span class="kd">function</span> <span class="nx">bar</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span><span class="k">return</span> <span class="nx">val</span><span class="o">*</span><span class="nx">val</span><span class="p">;}</span>
+<span class="p">(</span><span class="nb">Function</span><span class="p">.</span><span class="nx">flow</span><span class="p">(</span><span class="nx">foo</span><span class="p">,</span> <span class="nx">bar</span><span class="p">))(</span><span class="mi">10</span><span class="p">);</span> <span class="c1">// =&gt; 100</span>
+</pre>
+</div>
+
+
+<h4>Function.chain(...functions) {  return Function  }</h4>
+
+<p>与flow的执行结果相同，但chain的执行是非阻塞的</p>
+
+<div class="highlight">
+<pre><span class="kd">function</span> <span class="nx">foo</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span> <span class="o">++</span><span class="nx">val</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">bar</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span> <span class="nx">val</span><span class="o">*</span><span class="nx">val</span><span class="p">;}</span>
+<span class="kd">var</span> <span class="nx">worker</span> <span class="o">=</span> <span class="p">(</span><span class="nb">Function</span><span class="p">.</span><span class="nx">chain</span><span class="p">(</span><span class="nx">foo</span><span class="p">,</span> <span class="nx">bar</span><span class="p">))(</span><span class="mi">10</span><span class="p">);</span> <span class="c1">// =&gt; 100</span>
+<span class="nx">worker</span><span class="p">.</span><span class="nx">hasCompleted</span><span class="p">();</span>
+</pre>
+</div>
+
+
+<h4>Function.compose(...functions) {  return Function  }</h4>
+
+<p>后面函数执行的返回结果是前面函数执行的参数，以此规则类推。如 (Function.compose(f, g))(x) 执行结果等同于 f(g(x)).</p>
+
+<div class="highlight">
+<pre><span class="kd">function</span> <span class="nx">foo</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span><span class="k">return</span> <span class="o">++</span><span class="nx">val</span><span class="p">;}</span>
+<span class="kd">function</span> <span class="nx">bar</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span><span class="k">return</span> <span class="nx">val</span><span class="o">*</span><span class="nx">val</span><span class="p">;}</span>
+<span class="p">(</span><span class="nb">Function</span><span class="p">.</span><span class="nx">compose</span><span class="p">(</span><span class="nx">foo</span><span class="p">,</span> <span class="nx">bar</span><span class="p">))(</span><span class="mi">10</span><span class="p">)</span> <span class="c1">// =&gt; 101</span>
+</pre>
+</div>
+
+
+<h4>Function.or(...functions) {  return Function  }</h4>
+
+<p>按参数顺序执行函数，其中遇到任意函数执行返回结果为真时中断执行并返回true,否则返回false.如 (Function.or(f, g))(x); 执行结果等同于 f(x) || g(x);</p>
+
+<div class="highlight">
+<pre> <span class="kd">function</span> <span class="nx">foo</span><span class="p">(){</span><span class="k">return</span> <span class="kc">false</span><span class="p">;}</span>
+ <span class="kd">function</span> <span class="nx">bar</span><span class="p">(){</span><span class="k">return</span> <span class="kc">false</span><span class="p">;}</span>
+ <span class="p">(</span><span class="nb">Function</span><span class="p">.</span><span class="nx">or</span><span class="p">(</span><span class="nx">foo</span><span class="p">,</span> <span class="nx">bar</span><span class="p">))(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// =&gt; false</span>
+ <span class="kd">function</span> <span class="nx">foo2</span><span class="p">(){</span><span class="k">return</span> <span class="kc">false</span><span class="p">;}</span>
+ <span class="kd">function</span> <span class="nx">bar2</span><span class="p">(){</span><span class="k">return</span> <span class="kc">true</span><span class="p">;}</span>
+ <span class="p">(</span><span class="nb">Function</span><span class="p">.</span><span class="nx">or</span><span class="p">(</span><span class="nx">foo2</span><span class="p">,</span> <span class="nx">bar2</span><span class="p">))(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// =&gt; true</span>
+</pre>
+</div>
+
+
+<h4>Function.and(...functions) {  return Function  }</h4>
+
+<p>按参数顺序执行函数，其中遇到任意函数执行返回结果不为真时中断执行并返回false,否则返回true如 (Function.and(f, g))(x); 执行结果等同于 f(x) &amp;&amp; g(x);</p>
+
+<div class="highlight">
+<pre> <span class="kd">function</span> <span class="nx">foo</span><span class="p">(){</span><span class="k">return</span> <span class="nx">ture</span><span class="p">;}</span>
+ <span class="kd">function</span> <span class="nx">bar</span><span class="p">(){</span><span class="k">return</span> <span class="nx">ture</span><span class="p">;}</span>
+ <span class="p">(</span><span class="nb">Function</span><span class="p">.</span><span class="nx">and</span><span class="p">(</span><span class="nx">foo</span><span class="p">,</span> <span class="nx">bar</span><span class="p">))(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// =&gt; true</span>
+
+ <span class="kd">function</span> <span class="nx">foo2</span><span class="p">(){</span><span class="k">return</span> <span class="kc">false</span><span class="p">;}</span>
+ <span class="kd">function</span> <span class="nx">bar2</span><span class="p">(){</span><span class="k">return</span> <span class="nx">ture</span><span class="p">;}</span>
+ <span class="p">(</span><span class="nb">Function</span><span class="p">.</span><span class="nx">and</span><span class="p">(</span><span class="nx">foo</span><span class="p">,</span> <span class="nx">bar</span><span class="p">,</span> <span class="nx">foo2</span><span class="p">,</span> <span class="nx">bar2</span><span class="p">))(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// =&gt; false</span>
+</pre>
+</div>
+
+
+<h4>lambda() {  return Function  }</h4>
+
+<p>lambda表达式是一个匿名函数，表达式由参数列表与表达式体组成；</p>
+
+<div class="highlight">
+<pre><span class="s1">'x -&gt; x + 1'</span><span class="p">.</span><span class="nx">lambda</span><span class="p">()(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">// -&gt; 2</span>
+<span class="s1">'x y -&gt; x + 2*y'</span><span class="p">.</span><span class="nx">lambda</span><span class="p">()(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">// -&gt; 5</span>
+<span class="s1">'x, y -&gt; x + 2*y'</span><span class="p">.</span><span class="nx">lambda</span><span class="p">()(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">// -&gt; 5</span>
+<span class="s1">'x -&gt; y -&gt; x + 2*y'</span><span class="p">.</span><span class="nx">lambda</span><span class="p">()(</span><span class="mi">1</span><span class="p">)(</span><span class="mi">2</span><span class="p">);</span> <span class="c1">// -&gt; 5</span>
+<span class="s1">'_ + 1'</span><span class="p">.</span><span class="nx">lambda</span><span class="p">()(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">// -&gt; 2</span>
+<span class="s1">'/2'</span><span class="p">.</span><span class="nx">lambda</span><span class="p">()(</span><span class="mi">4</span><span class="p">)</span> <span class="c1">// -&gt; 2</span>
+<span class="s1">'2/'</span><span class="p">.</span><span class="nx">lambda</span><span class="p">()(</span><span class="mi">4</span><span class="p">)</span> <span class="c1">// -&gt; 0.5</span>
+<span class="s1">'/'</span><span class="p">.</span><span class="nx">lambda</span><span class="p">()(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="c1">// -&gt; 0.5</span>
+<span class="s1">'Math.cos(angle)'</span><span class="p">.</span><span class="nx">lambda</span><span class="p">()(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">)</span> <span class="c1">// -&gt; -1</span>
+<span class="s1">'point.x'</span><span class="p">.</span><span class="nx">lambda</span><span class="p">()({</span><span class="nx">x</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span><span class="mi">2</span><span class="p">})</span> <span class="c1">// -&gt; 1</span>
+<span class="s1">'({x:1, y:2})[key]'</span><span class="p">.</span><span class="nx">lambda</span><span class="p">()(</span><span class="s1">'x'</span><span class="p">)</span> <span class="c1">// -&gt; 1</span>
+</pre>
+</div>
+
+
+<h4>apply(thisArg, args) {  return result  }</h4>
+
+<p>Lambda表达式的apply方法</p>
+
+<div class="highlight">
+<pre><span class="s1">'x+1'</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">]);</span> <span class="c1">// -&gt; 3</span>
+<span class="s1">'/'</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]);</span> <span class="c1">// -&gt; 1/2</span>
+</pre>
+</div>
+
+
+<h4>call(thisArg, ...args) {  return result  }</h4>
+
+<p>Lambda表达式的call方法</p>
+
+<div class="highlight">
+<pre><span class="s1">'x+1'</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">// -&gt; 3</span>
+<span class="s1">'/'</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span> <span class="c1">// -&gt; 1/2</span>
+</pre>
+</div>
+
+
+<h3>License</h3>
+
+<p>(The MIT License)</p>
+
+<p>Copyright (c) 2010-2012 yuanyan <a href="mailto:yuanyan.cao@gmail.com">yuanyan.cao@gmail.com</a></p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Fanta maintained by <a href="https://github.com/yuanyan">yuanyan</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-31776964-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
